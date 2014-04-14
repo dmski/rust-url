@@ -6,8 +6,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-#![crate_id = "url#0.1"]
-#![crate_type = "lib"]
+#![crate_id = "rusturl#0.1"]
+#![crate_type = "dylib"]
+#![crate_type = "rlib"]
 #![feature(macro_rules)]
 
 extern crate encoding;
@@ -34,10 +35,10 @@ mod tests;
 
 #[deriving(Clone)]
 pub struct Url {
-    scheme: ~str,
-    scheme_data: SchemeData,
-    query: Option<~str>,  // See form_urlencoded::parse_str() to get name/value pairs.
-    fragment: Option<~str>,
+    pub scheme: ~str,
+    pub scheme_data: SchemeData,
+    pub query: Option<~str>,  // See form_urlencoded::parse_str() to get name/value pairs.
+    pub fragment: Option<~str>,
 }
 
 #[deriving(Clone)]
@@ -48,16 +49,16 @@ pub enum SchemeData {
 
 #[deriving(Clone)]
 pub struct SchemeRelativeUrl {
-    userinfo: Option<UserInfo>,
-    host: Host,
-    port: ~str,
-    path: ~[~str],
+    pub userinfo: Option<UserInfo>,
+    pub host: Host,
+    pub port: ~str,
+    pub path: ~[~str],
 }
 
 #[deriving(Clone)]
 pub struct UserInfo {
-    username: ~str,
-    password: Option<~str>,
+    pub username: ~str,
+    pub password: Option<~str>,
 }
 
 #[deriving(Clone)]
@@ -67,7 +68,7 @@ pub enum Host {
 }
 
 pub struct Ipv6Address {
-    pieces: [u16, ..8]
+    pub pieces: [u16, ..8]
 }
 
 impl Clone for Ipv6Address {
@@ -331,7 +332,7 @@ impl Ipv6Address {
                     break;
                 }
             }
-            output.push_str(self.pieces[i].to_str_radix(16));
+            output.push_str(self.pieces[i as uint].to_str_radix(16));
             if i < 7 {
                 output.push_str(":");
             }
@@ -358,7 +359,7 @@ fn longest_zero_sequence(pieces: &[u16, ..8]) -> (int, int) {
         };
     );
     for i in range(0, 8) {
-        if pieces[i] == 0 {
+        if pieces[i as uint] == 0 {
             if start < 0 {
                 start = i;
             }
